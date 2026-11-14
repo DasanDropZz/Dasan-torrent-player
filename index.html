@@ -11,31 +11,34 @@
             color: #ffffff;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 16px;
-        }
-        .header {
-            text-align: center;
-            padding: 12px 0 18px;
-            border-bottom: 1px solid #27272a;
-        }
-        .header h1 {
-            color: #ff2a55;
-            font-size: 22px;
-            margin: 0;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .header p {
-            color: #a1a1aa;
-            font-size: 12px;
-            margin: 4px 0 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
         .card-box {
             background-color: #18181b;
             border: 1px solid #27272a;
             border-radius: 12px;
-            padding: 15px;
-            margin-top: 16px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        h1 {
+            color: #ff2a55;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        p {
+            color: #a1a1aa;
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 20px;
         }
         .label-title {
             font-size: 13px;
@@ -53,7 +56,7 @@
             color: #fff;
             font-size: 14px;
             outline: none;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
         input[type="text"]:focus {
             border-color: #ff2a55;
@@ -69,72 +72,34 @@
             font-weight: bold;
             cursor: pointer;
         }
-        #player-box {
-            margin-top: 18px;
-            width: 100%;
-            min-height: 350px;
-            background: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #27272a;
-            display: none;
+        .btn-play:active {
+            opacity: 0.85;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>Kalidasan Torrent Play</h1>
-        <p>Cloud Streamer (All Formats Support)</p>
-    </div>
-
     <div class="card-box">
+        <h1>Kalidasan Torrent</h1>
+        <p>Instant Cloud Streamer</p>
+
         <label class="label-title">🔗 Magnet Link-ஐ இங்கே Paste செய்யவும்:</label>
         <input type="text" id="magnetInput" placeholder="magnet:?xt=urn:btih:...">
-        <button class="btn-play" onclick="streamNow()">⚡ Fast Play Video</button>
-    </div>
-
-    <div id="player-box">
-        <div id="player" class="webtor"></div>
+        
+        <button class="btn-play" onclick="playCloud()">⚡ Fast Play in Cloud</button>
     </div>
 
     <script>
-        function streamNow() {
+        function playCloud() {
             const magnet = document.getElementById('magnetInput').value.trim();
             if (!magnet || !magnet.startsWith('magnet:?')) {
                 alert("தயவுசெய்து சரியான Magnet Link-ஐ உள்ளிடவும்!");
                 return;
             }
 
-            const playerBox = document.getElementById('player-box');
-            const playerDiv = document.getElementById('player');
-            
-            playerBox.style.display = 'block';
-            playerDiv.innerHTML = '';
-
-            window.webtor = window.webtor || [];
-            window.webtor.push({
-                id: 'player',
-                magnet: magnet,
-                width: '100%',
-                lang: 'en',
-                features: {
-                    continue: false,
-                    title: true,
-                    subtitles: true,
-                    settings: true,
-                    fullscreen: true,
-                    download: true
-                }
-            });
-
-            if (!document.getElementById('webtor-sdk')) {
-                const script = document.createElement('script');
-                script.id = 'webtor-sdk';
-                script.src = 'https://cdn.jsdelivr.net/npm/@webtor/embed-sdk-js/dist/index.min.js';
-                script.async = true;
-                document.body.appendChild(script);
-            }
+            // Webtor அதிகாரப்பூர்வ கிளவுட் பிளேயருக்கு நேரடியாகத் திருப்புதல் (No Embedding Error)
+            const webtorUrl = `https://webtor.io/#/${encodeURIComponent(magnet)}`;
+            window.location.href = webtorUrl;
         }
     </script>
 
